@@ -146,8 +146,9 @@ class FullAttention(LinearAttention):
             config = self.cuda_config if q.is_cuda else self.cpu_config
 
             with torch.nn.attention.sdpa_kernel(config):
+                dropout_p = self.dropout if self.training else 0.0
                 out = F.scaled_dot_product_attention(q, k, v,
-                    attn_mask=mask, dropout_p=self.dropout, scale=self.scale)
+                    attn_mask=mask, dropout_p=dropout_p, scale=self.scale)
         else:
             attn = torch.einsum(f"...ld, ...md -> ...lm", q, k)
             attn = attn * self.scale

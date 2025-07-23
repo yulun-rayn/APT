@@ -142,8 +142,8 @@ class APT(nn.Module):
                 ]
             """
             return torch.cat((
-                torch.ones(n_train+n_test, n_train),
-                torch.zeros(n_train+n_test, n_test)
+                torch.ones(n_train+n_test, n_train, dtype=torch.bool),
+                torch.zeros(n_train+n_test, n_test, dtype=torch.bool)
             ), dim=1) # (n_train+n_test, n_train+n_test)
         """
         mask: (batch_size, n_train)
